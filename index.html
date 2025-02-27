@@ -6,49 +6,48 @@
     <title>Totalizador De Ventas</title>
 </head>
 <body>
-    <h1>Cantidad de Items</h1>
-    <label for="cantidad">Ingrese número:</label>
-    <input type="number" id="cantidad" />
-    <button onclick="mostrarCantidad()">Mostrar</button>
-    <p id="resultadoCantidad"></p>
+  <label for="cantidad">Ingrese número:</label>
+  <input type="number" id="cantidad" />
+  <button onclick="mostrarCantidad()">Mostrar</button>
+  <p id="resultadoCantidad"></p>
 
-    <h2>Precio por Item</h2>
-    <label for="precio">Ingrese Precio del Item:</label>
-    <input type="number" id="precio" />
-    <button onclick="mostrarPrecio()">Mostrar</button>
-    <p id="resultadoPrecio"></p>
+  <h2>Precio por Item</h2>
+  <label for="precio">Ingrese Precio del Item:</label>
+  <input type="number" id="precio" />
+  <button onclick="mostrarPrecio()">Mostrar</button>
+  <p id="resultadoPrecio"></p>
 
-    <h2>Precio Neto</h2>
-    <button onclick="calcularTotal()">Calcular Total</button>
-    <p id="resultadoTotal"></p>
+  <h2>Precio Neto</h2>
+  <button onclick="calcularTotal()">Calcular Total</button>
+  <p id="resultadoTotal"></p>
 
-    <script type="module">
-        import precioneto from './src/precioneto.js';
+  <script type="module">
+      import precioneto from './src/precioneto.js';
 
-        function mostrarCantidad() {
-            let cantidad = document.getElementById("cantidad").value;
-            document.getElementById("resultadoCantidad").innerText = "Cantidad ingresada: " + cantidad;
-        }
+      function mostrarCantidad() {
+          let cantidad = document.getElementById("cantidad").value;
+          document.getElementById("resultadoCantidad").innerText = "Cantidad ingresada: " + cantidad;
+      }
 
-        function mostrarPrecio() {
-            let precio = document.getElementById("precio").value;
-            document.getElementById("resultadoPrecio").innerText = "Precio ingresado: $" + precio;
-        }
+      function mostrarPrecio() {
+          let precio = document.getElementById("precio").value;
+          document.getElementById("resultadoPrecio").innerText = "Precio ingresado: $" + precio;
+      }
 
-        function calcularTotal() {
-            let cantidad = parseFloat(document.getElementById("cantidad").value);
-            let precio = parseFloat(document.getElementById("precio").value);
-            if (!isNaN(cantidad) && !isNaN(precio)) {
-                let total = precioneto(cantidad, precio);
-                document.getElementById("resultadoTotal").innerText = "Total a pagar: $" + total.toFixed(2);
-            } else {
-                document.getElementById("resultadoTotal").innerText = "Ingrese valores válidos.";
-            }
-        }
+      function calcularTotal() {
+          let cantidad = parseFloat(document.getElementById("cantidad").value);
+          let precio = parseFloat(document.getElementById("precio").value);
+          if (!isNaN(cantidad) && !isNaN(precio)) {
+              let total = precioneto(cantidad, precio);
+              document.getElementById("resultadoTotal").innerText = "Total a pagar: $" + total.toFixed(2);
+          } else {
+              document.getElementById("resultadoTotal").innerText = "Ingrese valores válidos.";
+          }
+      }
 
-        window.mostrarCantidad = mostrarCantidad;
-        window.mostrarPrecio = mostrarPrecio;
-        window.calcularTotal = calcularTotal;
-    </script>
+      window.mostrarCantidad = mostrarCantidad;
+      window.mostrarPrecio = mostrarPrecio;
+      window.calcularTotal = calcularTotal;
+  </script>
 </body>
 </html>
