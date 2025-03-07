@@ -1,13 +1,21 @@
-import porcentajedeimpuesto from "./porcentajedeimpuestos.js";
+import porcentajedeimpuesto from "./porcentajedeimpuestos";
 
-describe("Cálculo de impuesto", () => {
-  it("debería calcular el 5% de 100 como 5", () => {
-    expect(porcentajedeimpuesto(100, 5)).toEqual(5);
-  });
-  it("debería calcular el 10% de 200 como 20", () => {
-    expect(porcentajedeimpuesto(200, 10)).toEqual(20);
-  });
-  it("debería calcular el 8% de 50 como 4", () => {
-    expect(porcentajedeimpuesto(50, 8)).toEqual(4);
-  });
+test("Calcula impuesto para UT (6.65%)", () => {
+  expect(porcentajedeimpuesto(100, "UT")).toBeCloseTo(6.65);
+});
+
+test("Calcula impuesto para NV (8.00%)", () => {
+  expect(porcentajedeimpuesto(100, "NV")).toBeCloseTo(8.00);
+});
+
+test("Calcula impuesto para TX (6.25%)", () => {
+  expect(porcentajedeimpuesto(100, "TX")).toBeCloseTo(6.25);
+});
+
+test("Calcula impuesto para AL (4.00%)", () => {
+  expect(porcentajedeimpuesto(100, "AL")).toBeCloseTo(4.00);
+});
+
+test("Calcula impuesto para CA (8.25%)", () => {
+  expect(porcentajedeimpuesto(100, "CA")).toBeCloseTo(8.25);
 });

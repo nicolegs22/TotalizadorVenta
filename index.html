@@ -18,12 +18,24 @@
     <button onclick="mostrarPrecio()">Mostrar</button>
     <p id="resultadoPrecio"></p>
 
-  <h2>Precio Neto</h2>
-  <button onclick="calcularTotal()">Calcular Total</button>
-  <p id="resultadoTotal"></p>
+    <h2>Precio Neto</h2>
+    <button onclick="calcularTotal()">Calcular Total</button>
+    <p id="resultadoTotal"></p>
 
-  <script type="module">
-      import precioneto from './src/precioneto.js';
+    <h2>Seleccione un Estado</h2>
+    <label for="estado">Estado:</label>
+    <select id="estado">
+        <option value="">Seleccione...</option>
+        <option value="Nuevo León">Nuevo León</option>
+        <option value="Jalisco">Jalisco</option>
+        <option value="CDMX">CDMX</option>
+        <option value="Puebla">Puebla</option>
+    </select>
+    <button onclick="mostrarEstado()">Mostrar Estado</button>
+    <p id="resultadoEstado"></p>
+
+    <script type="module">
+        import precioneto from './src/precioneto.js';
 
         function mostrarCantidad() {
             let cantidad = document.getElementById("cantidad").value;
