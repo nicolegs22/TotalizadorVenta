@@ -1,6 +1,7 @@
 const tasasDeImpuestos = {
   CA: 8.25,
-  AL: 4.00
+  AL: 4.00,
+  NV: 8.00
 };
   function porcentajedeimpuesto(monto, estado) {
     const porcentaje = tasasDeImpuestos[estado];
