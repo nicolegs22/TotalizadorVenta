@@ -6,7 +6,9 @@
     <title>Totalizador De Ventas</title>
 </head>
 <body>
-    <h1>Cantidad de Items</h1>
+    <h1>Totalizador De Ventas</h1>
+
+    <h2>Cantidad de Items</h2>
     <label for="cantidad">Ingrese número:</label>
     <input type="number" id="cantidad" />
     <button onclick="mostrarCantidad()">Mostrar</button>
@@ -18,24 +20,30 @@
     <button onclick="mostrarPrecio()">Mostrar</button>
     <p id="resultadoPrecio"></p>
 
-    <h2>Precio Neto</h2>
-    <button onclick="calcularTotal()">Calcular Total</button>
-    <p id="resultadoTotal"></p>
-
-    <h2>Seleccione un Estado</h2>
+    <h2>Seleccione el Estado</h2>
     <label for="estado">Estado:</label>
     <select id="estado">
-        <option value="">Seleccione...</option>
-        <option value="Nuevo León">Nuevo León</option>
-        <option value="Jalisco">Jalisco</option>
-        <option value="CDMX">CDMX</option>
-        <option value="Puebla">Puebla</option>
+        <option value="">Seleccione un estado</option>
+        <option value="UT">Utah (UT)</option>
+        <option value="NV">Nevada (NV)</option>
+        <option value="TX">Texas (TX)</option>
+        <option value="AL">Alabama (AL)</option>
+        <option value="CA">California (CA)</option>
     </select>
-    <button onclick="mostrarEstado()">Mostrar Estado</button>
+    <button onclick="mostrarEstado()">Mostrar</button>
     <p id="resultadoEstado"></p>
+
+    <h2>Precio Neto</h2>
+    <button onclick="calcularTotal()">Calcular Precio Neto</button>
+    <p id="resultadoTotal"></p>
+
+    <h2>Total con Impuesto</h2>
+    <button onclick="calcularTotalConImpuesto()">Calcular Total con Impuesto</button>
+    <p id="resultadoTotalImpuesto"></p>
 
     <script type="module">
         import precioneto from './src/precioneto.js';
+        import porcentajedeimpuesto from './src/porcentajedeimpuestos.js';
 
         function mostrarCantidad() {
             let cantidad = document.getElementById("cantidad").value;
@@ -45,6 +53,15 @@
         function mostrarPrecio() {
             let precio = document.getElementById("precio").value;
             document.getElementById("resultadoPrecio").innerText = "Precio ingresado: $" + precio;
+        }
+
+        function mostrarEstado() {
+            let estado = document.getElementById("estado").value;
+            if (estado) {
+                document.getElementById("resultadoEstado").innerText = "Estado seleccionado: " + estado;
+            } else {
+                document.getElementById("resultadoEstado").innerText = "Seleccione un estado.";
+            }
         }
 
         function calcularTotal() {
@@ -58,19 +75,28 @@
             }
         }
 
-        function mostrarEstado() {
+        function calcularTotalConImpuesto() {
+            let cantidad = parseFloat(document.getElementById("cantidad").value);
+            let precio = parseFloat(document.getElementById("precio").value);
             let estado = document.getElementById("estado").value;
-            if (estado) {
-                document.getElementById("resultadoEstado").innerText = "Estado seleccionado: " + estado;
+
+            if (!isNaN(cantidad) && !isNaN(precio) && estado) {
+                let total = precioneto(cantidad, precio);
+                let impuesto = porcentajedeimpuesto(total, estado);
+                let totalConImpuesto = total + impuesto;
+                
+                document.getElementById("resultadoTotalImpuesto").innerText =
+                    `Total con impuesto: $${totalConImpuesto.toFixed(2)} (Impuesto: $${impuesto.toFixed(2)})`;
             } else {
-                document.getElementById("resultadoEstado").innerText = "Seleccione un estado.";
+                document.getElementById("resultadoTotalImpuesto").innerText = "Ingrese valores válidos y seleccione un estado.";
             }
         }
 
         window.mostrarCantidad = mostrarCantidad;
         window.mostrarPrecio = mostrarPrecio;
-        window.calcularTotal = calcularTotal;
         window.mostrarEstado = mostrarEstado;
+        window.calcularTotal = calcularTotal;
+        window.calcularTotalConImpuesto = calcularTotalConImpuesto;
     </script>
 </body>
 </html>
