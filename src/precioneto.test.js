@@ -1,4 +1,4 @@
-import { precioneto, calcularPrecioTotal, calcularPrecioConDescuento } from "./precioneto";
+import { precioneto, calcularPrecioTotal, calcularPrecioConDescuento, calcularPrecioConDescuentoFijo } from "./precioneto";
 
 describe("Cálculo del precio neto y total", () => {
     it("debería calcular el precio neto de los items", () => {
@@ -22,7 +22,7 @@ describe("Cálculo del precio neto y total", () => {
     });
 });
 
-describe("Cálculo del precio con descuento", () => {
+describe("Cálculo del precio con descuento porcentual", () => {
     it("debería calcular el precio con 20% de descuento sobre 1000", () => {
         expect(calcularPrecioConDescuento(1000, 20)).toBe(800.00);
     });
@@ -37,5 +37,19 @@ describe("Cálculo del precio con descuento", () => {
 
     it("debería calcular el precio con 10% de descuento sobre 500", () => {
         expect(calcularPrecioConDescuento(500, 10)).toBe(450.00);
+    });
+});
+
+describe("Cálculo del precio con descuento fijo", () => {
+    it("debería calcular el precio restando 3000 sobre 5000", () => {
+        expect(calcularPrecioConDescuentoFijo(5000, 3000)).toBe(2000.00);
+    });
+
+    it("debería calcular el precio restando 3000 sobre 3000 (resultado debe ser 0)", () => {
+        expect(calcularPrecioConDescuentoFijo(3000, 3000)).toBe(0.00);
+    });
+
+    it("debería calcular el precio restando 3000 sobre 2000 (resultado debe ser 0, sin valores negativos)", () => {
+        expect(calcularPrecioConDescuentoFijo(2000, 3000)).toBe(0.00);
     });
 });
