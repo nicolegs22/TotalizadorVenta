@@ -20,4 +20,8 @@ describe("Cálculo de precio con categoría de producto", () => {
     it("debería aplicar el impuesto y descuento para la categoría Electrónicos", () => {
         expect(calcularPrecioConCategoria(1000, 100, "Electrónicos")).toBe(1128.6);
     });
+
+    it("debería aplicar el impuesto adicional para la categoría Vestimenta", () => {
+        expect(calcularPrecioConCategoria(1000, 100, "Vestimenta")).toBe(1120.00);
+    });
 });
