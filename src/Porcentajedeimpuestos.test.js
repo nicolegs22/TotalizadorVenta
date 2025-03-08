@@ -16,3 +16,7 @@ test("Calcula impuesto para NV (8.00%)", () => {
 test("Calcula impuesto para UT (6.65%)", () => {
   expect(porcentajedeimpuesto(100, "UT")).toBeCloseTo(6.65);
 });
+
+test("Calcula impuesto para TX (6.25%)", () => {
+  expect(porcentajedeimpuesto(100, "TX")).toBeCloseTo(6.25);
+});
