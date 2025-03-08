@@ -20,7 +20,6 @@
     <button onclick="mostrarPrecio()">Mostrar</button>
     <p id="resultadoPrecio"></p>
 
-
     <h2>Seleccione el Estado</h2>
     <label for="estado">Estado:</label>
     <select id="estado">
@@ -29,7 +28,7 @@
         <option value="NV">Nevada (NV)</option>
         <option value="TX">Texas (TX)</option>
         <option value="AL">Alabama (AL)</option>
-        <option value="CA">California (CA)</option>
+        <option value="CA" selected>California (CA)</option>
     </select>
     <button onclick="mostrarEstado()">Mostrar</button>
     <p id="resultadoEstado"></p>
@@ -44,11 +43,23 @@
         <option value="Muebles">Muebles</option>
         <option value="Electrónicos">Electrónicos</option>
         <option value="Vestimenta">Vestimenta</option>
-        <option value="Varios">Varios</option>
+        <option value="Varios" selected>Varios</option>
     </select>
     <button onclick="mostrarCategoria()">Mostrar</button>
     <p id="resultadoCategoria"></p>
 
+    <h2>Peso Volumétrico</h2>
+    <label for="pesoVolumetrico">Peso Volumétrico:</label>
+    <input type="number" id="pesoVolumetrico" />
+
+    <h2>Tipo de Cliente</h2>
+    <label for="tipoCliente">Tipo de Cliente:</label>
+    <select id="tipoCliente">
+        <option value="Normal">Normal</option>
+        <option value="Recurrente">Recurrente</option>
+        <option value="Antiguo Recurrente">Antiguo Recurrente</option>
+        <option value="Especial">Especial</option>
+    </select>
 
     <h2>Precio Neto</h2>
     <button onclick="calcularTotal()">Calcular Precio Neto</button>
@@ -62,11 +73,14 @@
     <button onclick="calcularTotalConDescuento()">Calcular Total con Descuento</button>
     <p id="resultadoDescuento"></p>
 
+    <h2>Detalles del Cálculo</h2>
+    <div id="detallesCálculo"></div>
+
     <script type="module">
-        import { precioneto } from './src/precioneto.js';
+        import { precioneto, calcularPrecioTotal } from './src/precioneto.js';
         import porcentajedeimpuesto from './src/porcentajedeimpuestos.js';
         import { calcularPrecioConCategoria } from './src/categoria.js';
-        import { calcularPrecioTotalConDescuento } from './src/descuento.js';
+        import { calcularDescuentoCliente } from './src/descuentosClientes.js';
 
         function mostrarCantidad() {
             let cantidad = document.getElementById("cantidad").value;
@@ -99,9 +113,10 @@
         function calcularTotal() {
             let cantidad = parseFloat(document.getElementById("cantidad").value);
             let precio = parseFloat(document.getElementById("precio").value);
-            if (!isNaN(cantidad) && !isNaN(precio)) {
+            if (!isNaN(cantidad) && !isNaN(precio) && cantidad > 0 && precio > 0) {
                 let total = precioneto(cantidad, precio);
                 document.getElementById("resultadoTotal").innerText = "Total a pagar: $" + total.toFixed(2);
+                mostrarDetalles(total);
             } else {
                 document.getElementById("resultadoTotal").innerText = "Ingrese valores válidos.";
             }
@@ -112,13 +127,13 @@
             let precio = parseFloat(document.getElementById("precio").value);
             let estado = document.getElementById("estado").value;
 
-            if (!isNaN(cantidad) && !isNaN(precio) && estado) {
+            if (!isNaN(cantidad) && !isNaN(precio) && estado && cantidad > 0 && precio > 0) {
                 let total = precioneto(cantidad, precio);
                 let impuesto = porcentajedeimpuesto(total, estado);
                 let totalConImpuesto = total + impuesto;
-                
                 document.getElementById("resultadoTotalImpuesto").innerText =
                     `Total con impuesto: $${totalConImpuesto.toFixed(2)} (Impuesto: $${impuesto.toFixed(2)})`;
+                mostrarDetalles(totalConImpuesto, impuesto);
             } else {
                 document.getElementById("resultadoTotalImpuesto").innerText = "Ingrese valores válidos y seleccione un estado.";
             }
@@ -129,18 +144,43 @@
             let precio = parseFloat(document.getElementById("precio").value);
             let estado = document.getElementById("estado").value;
             let categoria = document.getElementById("categoria").value;
+            let pesoVolumetrico = parseFloat(document.getElementById("pesoVolumetrico").value);
+            let tipoCliente = document.getElementById("tipoCliente").value;
 
-            if (!isNaN(cantidad) && !isNaN(precio) && estado && categoria) {
+            if (!isNaN(cantidad) && !isNaN(precio) && estado && categoria && cantidad > 0 && precio > 0) {
                 let totalNeto = precioneto(cantidad, precio);
                 let impuesto = porcentajedeimpuesto(totalNeto, estado);
-
+                let costoEnvio = obtenerCostoEnvio(pesoVolumetrico);
+                let descuentoFijo = calcularDescuentoCliente(totalNeto, categoria, tipoCliente);
                 let totalConCategoria = calcularPrecioConCategoria(totalNeto, impuesto, categoria);
+                let totalConDescuento = calcularPrecioTotalConDescuento(totalConCategoria, impuesto);
+                let precioTotal = totalConDescuento + costoEnvio - descuentoFijo;
 
-                document.getElementById("resultadoDescuento").innerText = 
-                    `Total con descuento aplicado y categoría: $${totalConCategoria.toFixed(2)}`;
+                document.getElementById("resultadoDescuento").innerText =
+                    `Total con descuento aplicado y categoría: $${precioTotal.toFixed(2)}`;
+                mostrarDetalles(precioTotal, impuesto, categoria);
             } else {
                 document.getElementById("resultadoDescuento").innerText = "Ingrese valores válidos, seleccione un estado y una categoría.";
             }
+        }
+
+        function mostrarDetalles(total, impuesto = 0, categoria = '') {
+            let cantidad = parseFloat(document.getElementById("cantidad").value);
+            let precio = parseFloat(document.getElementById("precio").value);
+            let estado = document.getElementById("estado").value;
+            let detalles = `
+                <h3>Detalles del Cálculo</h3>
+                <p>Cantidad de Items: ${cantidad}</p>
+                <p>Precio por Item: $${precio}</p>
+                <p>Precio Neto: $${(cantidad * precio).toFixed(2)}</p>
+                <p>Estado: ${estado}</p>
+                <p>Impuesto: $${impuesto.toFixed(2)}</p>
+                <p>Precio con Impuesto: $${(total).toFixed(2)}</p>
+            `;
+            if (categoria) {
+                detalles += `<p>Categoría Seleccionada: ${categoria}</p>`;
+            }
+            document.getElementById("detallesCálculo").innerHTML = detalles;
         }
 
         window.mostrarCantidad = mostrarCantidad;

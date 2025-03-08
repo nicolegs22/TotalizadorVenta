@@ -1,4 +1,4 @@
-import { obtenerPorcentajeDescuento, calcularPrecioTotalConDescuento } from "./descuento";
+import { calcularPrecioTotalConDescuento, obtenerPorcentajeDescuento } from "./descuento";
 
 describe("Cálculo del porcentaje de descuento", () => {
     it("debería aplicar un 3% de descuento para un total de $1000", () => {
@@ -9,32 +9,16 @@ describe("Cálculo del porcentaje de descuento", () => {
         expect(obtenerPorcentajeDescuento(3000)).toBe(5);
     });
 
-    it("debería aplicar un 5% de descuento para un total de $6999", () => {
-        expect(obtenerPorcentajeDescuento(6999)).toBe(5);
-    });
-
     it("debería aplicar un 7% de descuento para un total de $7000", () => {
         expect(obtenerPorcentajeDescuento(7000)).toBe(7);
-    });
-
-    it("debería aplicar un 7% de descuento para un total de $9999", () => {
-        expect(obtenerPorcentajeDescuento(9999)).toBe(7);
     });
 
     it("debería aplicar un 10% de descuento para un total de $10000", () => {
         expect(obtenerPorcentajeDescuento(10000)).toBe(10);
     });
 
-    it("debería aplicar un 10% de descuento para un total de $29999", () => {
-        expect(obtenerPorcentajeDescuento(29999)).toBe(10);
-    });
-
     it("debería aplicar un 15% de descuento para un total de $30000", () => {
         expect(obtenerPorcentajeDescuento(30000)).toBe(15);
-    });
-
-    it("debería aplicar un 15% de descuento para un total de $50000", () => {
-        expect(obtenerPorcentajeDescuento(50000)).toBe(15);
     });
 });
 

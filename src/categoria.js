@@ -1,57 +1,25 @@
 function calcularPrecioConCategoria(totalNeto, impuesto, categoria) {
-    if (categoria === "Alimentos") {
-        const impuestoAdicional = 0;
-        const descuentoAdicional = 2;
-        const totalConImpuesto = totalNeto + impuesto;
-        const descuento = (totalConImpuesto * descuentoAdicional) / 100;
-        return parseFloat((totalConImpuesto - descuento).toFixed(2));
-    }
+    const categorias = {
+        "Alimentos": { impuestoAdicional: 0, descuentoAdicional: 2 },
+        "Bebidas alcohólicas": { impuestoAdicional: 7, descuentoAdicional: 0 },
+        "Material de escritorio": { impuestoAdicional: 0, descuentoAdicional: 1.5 },
+        "Muebles": { impuestoAdicional: 3, descuentoAdicional: 0 },
+        "Electrónicos": { impuestoAdicional: 4, descuentoAdicional: 1 },
+        "Vestimenta": { impuestoAdicional: 2, descuentoAdicional: 0 },
+        "Varios": { impuestoAdicional: 0, descuentoAdicional: 0 },
+    };
 
-    if (categoria === "Bebidas alcohólicas") {
-        const impuestoAdicional = 7;
-        const descuentoAdicional = 0;
-        const totalConImpuesto = totalNeto + impuesto + (totalNeto * impuestoAdicional) / 100;
-        return parseFloat(totalConImpuesto.toFixed(2));
-    }
+    const config = categorias[categoria] || { impuestoAdicional: 0, descuentoAdicional: 0 };
 
-    if (categoria === "Material de escritorio") {
-        const impuestoAdicional = 0;
-        const descuentoAdicional = 1.5;
-        const totalConImpuesto = totalNeto + impuesto;
-        const descuento = (totalConImpuesto * descuentoAdicional) / 100;
-        return parseFloat((totalConImpuesto - descuento).toFixed(2));
-    }
+    // Calcular impuesto adicional
+    const impuestoAdicional = (totalNeto * config.impuestoAdicional) / 100;
+    const totalConImpuesto = totalNeto + impuesto + impuestoAdicional;
 
-    if (categoria === "Muebles") {
-        const impuestoAdicional = 3;
-        const descuentoAdicional = 0;
-        const totalConImpuesto = totalNeto + impuesto + (totalNeto * impuestoAdicional) / 100;
-        return parseFloat(totalConImpuesto.toFixed(2));
-    }
+    // Calcular descuento adicional
+    const descuentoAdicional = (totalConImpuesto * config.descuentoAdicional) / 100;
+    const totalConDescuento = totalConImpuesto - descuentoAdicional;
 
-    if (categoria === "Electrónicos") {
-        const impuestoAdicional = 4;
-        const descuentoAdicional = 1;
-        const totalConImpuesto = totalNeto + impuesto + (totalNeto * impuestoAdicional) / 100;
-        const descuento = (totalConImpuesto * descuentoAdicional) / 100;
-        return parseFloat((totalConImpuesto - descuento).toFixed(2));
-    }
-
-    if (categoria === "Vestimenta") {
-        const impuestoAdicional = 2;
-        const descuentoAdicional = 0;
-        const totalConImpuesto = totalNeto + impuesto + (totalNeto * impuestoAdicional) / 100;
-        return parseFloat(totalConImpuesto.toFixed(2));
-    }
-
-    if (categoria === "Varios") {
-        const impuestoAdicional = 0;
-        const descuentoAdicional = 0;
-        const totalConImpuesto = totalNeto + impuesto;
-        return parseFloat(totalConImpuesto.toFixed(2));
-    }
-    
-    return totalNeto + impuesto;  
+    return parseFloat(totalConDescuento.toFixed(2));
 }
 
 export { calcularPrecioConCategoria };
