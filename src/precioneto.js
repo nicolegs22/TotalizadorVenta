@@ -12,11 +12,28 @@ function obtenerCostoEnvio(pesoVolumetrico) {
   return 9; // > 200
 }
 
-function calcularPrecioTotal(cantidad, precioUnitario, porcentajeCA, pesoVolumetrico) {
+function obtenerDescuentoCliente(tipoCliente) {
+  switch (tipoCliente) {
+    case 'Recurrente':
+      return 0.5;
+    case 'Antiguo Recurrente':
+      return 1;
+    case 'Especial':
+      return 1.5;
+    default:
+      return 0; // Normal o tipo no especificado
+  }
+}
+
+function calcularPrecioTotal(cantidad, precioUnitario, porcentajeCA, pesoVolumetrico, tipoCliente) {
   const precioNeto = precioneto(cantidad, precioUnitario);
   const impuesto = (precioNeto * porcentajeCA) / 100;
   const costoEnvio = obtenerCostoEnvio(pesoVolumetrico);
-  const precioTotal = precioNeto + impuesto + costoEnvio; // Incluye el costo de envío
+  
+  const descuentoEnvio = obtenerDescuentoCliente(tipoCliente);
+  const costoEnvioConDescuento = costoEnvio - (costoEnvio * descuentoEnvio) / 100;
+
+  const precioTotal = precioNeto + impuesto + costoEnvioConDescuento; // Incluye el costo de envío con descuento
   return parseFloat(precioTotal.toFixed(2));
 }
 
