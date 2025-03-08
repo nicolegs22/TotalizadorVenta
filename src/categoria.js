@@ -43,6 +43,13 @@ function calcularPrecioConCategoria(totalNeto, impuesto, categoria) {
         const totalConImpuesto = totalNeto + impuesto + (totalNeto * impuestoAdicional) / 100;
         return parseFloat(totalConImpuesto.toFixed(2));
     }
+
+    if (categoria === "Varios") {
+        const impuestoAdicional = 0;
+        const descuentoAdicional = 0;
+        const totalConImpuesto = totalNeto + impuesto;
+        return parseFloat(totalConImpuesto.toFixed(2));
+    }
     
     return totalNeto + impuesto;  
 }
