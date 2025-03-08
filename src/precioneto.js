@@ -19,4 +19,9 @@ function calcularPrecioConDescuentoFijo(precioNeto, descuentoFijo) {
   return parseFloat(Math.max(precioFinal, 0).toFixed(2)); // Evita valores negativos
 }
 
-export { precioneto, calcularPrecioTotal, calcularPrecioConDescuento, calcularPrecioConDescuentoFijo };
+function calcularPrecioConDescuentoPorcentajeFijo(precioNeto, porcentajeDescuento) {
+  const descuento = (precioNeto * porcentajeDescuento) / 100;
+  return parseFloat((precioNeto - descuento).toFixed(2));
+}
+
+export { precioneto, calcularPrecioTotal, calcularPrecioConDescuento, calcularPrecioConDescuentoFijo, calcularPrecioConDescuentoPorcentajeFijo };
