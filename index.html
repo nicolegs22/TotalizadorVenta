@@ -41,9 +41,16 @@
     <button onclick="calcularTotalConImpuesto()">Calcular Total con Impuesto</button>
     <p id="resultadoTotalImpuesto"></p>
 
+    <h2>Descuento</h2>
+    <label for="descuento">Ingrese porcentaje de descuento:</label>
+    <input type="number" id="descuento" />
+    <button onclick="calcularTotalConDescuento()">Calcular Total con Descuento</button>
+    <p id="resultadoDescuento"></p>
+
     <script type="module">
-        import precioneto from './src/precioneto.js';
+        import { precioneto } from './src/precioneto.js';
         import porcentajedeimpuesto from './src/porcentajedeimpuestos.js';
+        import { calcularPrecioConDescuento, calcularPrecioTotalConDescuento } from './src/descuento.js';
 
         function mostrarCantidad() {
             let cantidad = document.getElementById("cantidad").value;
@@ -92,11 +99,30 @@
             }
         }
 
+        function calcularTotalConDescuento() {
+            let cantidad = parseFloat(document.getElementById("cantidad").value);
+            let precio = parseFloat(document.getElementById("precio").value);
+            let porcentajeDescuento = parseFloat(document.getElementById("descuento").value);
+            let estado = document.getElementById("estado").value;
+
+            if (!isNaN(cantidad) && !isNaN(precio) && porcentajeDescuento >= 0 && estado) {
+                let totalNeto = precioneto(cantidad, precio);
+                let impuesto = porcentajedeimpuesto(totalNeto, estado);
+                let totalConDescuento = calcularPrecioTotalConDescuento(totalNeto, impuesto, porcentajeDescuento);
+
+                document.getElementById("resultadoDescuento").innerText = 
+                    `Total con descuento: $${totalConDescuento.toFixed(2)} (Descuento: ${porcentajeDescuento}%)`;
+            } else {
+                document.getElementById("resultadoDescuento").innerText = "Ingrese valores válidos, descuento y estado.";
+            }
+        }
+
         window.mostrarCantidad = mostrarCantidad;
         window.mostrarPrecio = mostrarPrecio;
         window.mostrarEstado = mostrarEstado;
         window.calcularTotal = calcularTotal;
         window.calcularTotalConImpuesto = calcularTotalConImpuesto;
+        window.calcularTotalConDescuento = calcularTotalConDescuento;
     </script>
 </body>
 </html>
