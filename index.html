@@ -20,6 +20,7 @@
     <button onclick="mostrarPrecio()">Mostrar</button>
     <p id="resultadoPrecio"></p>
 
+
     <h2>Seleccione el Estado</h2>
     <label for="estado">Estado:</label>
     <select id="estado">
@@ -28,10 +29,26 @@
         <option value="NV">Nevada (NV)</option>
         <option value="TX">Texas (TX)</option>
         <option value="AL">Alabama (AL)</option>
-        <option value="CA" selected>California (CA)</option> <!-- Se añadió selected aquí -->
+        <option value="CA">California (CA)</option>
     </select>
     <button onclick="mostrarEstado()">Mostrar</button>
     <p id="resultadoEstado"></p>
+
+    <h2>Seleccione la Categoría</h2>
+    <label for="categoria">Categoría:</label>
+    <select id="categoria">
+        <option value="">Seleccione una categoría</option>
+        <option value="Alimentos">Alimentos</option>
+        <option value="Bebidas alcohólicas">Bebidas alcohólicas</option>
+        <option value="Material de escritorio">Material de escritorio</option>
+        <option value="Muebles">Muebles</option>
+        <option value="Electrónicos">Electrónicos</option>
+        <option value="Vestimenta">Vestimenta</option>
+        <option value="Varios">Varios</option>
+    </select>
+    <button onclick="mostrarCategoria()">Mostrar</button>
+    <p id="resultadoCategoria"></p>
+
 
     <h2>Precio Neto</h2>
     <button onclick="calcularTotal()">Calcular Precio Neto</button>
@@ -48,6 +65,7 @@
     <script type="module">
         import { precioneto } from './src/precioneto.js';
         import porcentajedeimpuesto from './src/porcentajedeimpuestos.js';
+        import { calcularPrecioConCategoria } from './src/categoria.js';
         import { calcularPrecioTotalConDescuento } from './src/descuento.js';
 
         function mostrarCantidad() {
@@ -66,6 +84,15 @@
                 document.getElementById("resultadoEstado").innerText = "Estado seleccionado: " + estado;
             } else {
                 document.getElementById("resultadoEstado").innerText = "Seleccione un estado.";
+            }
+        }
+
+        function mostrarCategoria() {
+            let categoria = document.getElementById("categoria").value;
+            if (categoria) {
+                document.getElementById("resultadoCategoria").innerText = "Categoría seleccionada: " + categoria;
+            } else {
+                document.getElementById("resultadoCategoria").innerText = "Seleccione una categoría.";
             }
         }
 
@@ -101,22 +128,25 @@
             let cantidad = parseFloat(document.getElementById("cantidad").value);
             let precio = parseFloat(document.getElementById("precio").value);
             let estado = document.getElementById("estado").value;
+            let categoria = document.getElementById("categoria").value;
 
-            if (!isNaN(cantidad) && !isNaN(precio) && estado) {
+            if (!isNaN(cantidad) && !isNaN(precio) && estado && categoria) {
                 let totalNeto = precioneto(cantidad, precio);
                 let impuesto = porcentajedeimpuesto(totalNeto, estado);
-                let totalConDescuento = calcularPrecioTotalConDescuento(totalNeto, impuesto);
+
+                let totalConCategoria = calcularPrecioConCategoria(totalNeto, impuesto, categoria);
 
                 document.getElementById("resultadoDescuento").innerText = 
-                    `Total con descuento aplicado: $${totalConDescuento.toFixed(2)} (Descuento: ${totalNeto < 3000 ? '3%' : (totalNeto < 7000 ? '5%' : (totalNeto < 10000 ? '7%' : (totalNeto < 30000 ? '10%' : '15%')))})`;
+                    `Total con descuento aplicado y categoría: $${totalConCategoria.toFixed(2)}`;
             } else {
-                document.getElementById("resultadoDescuento").innerText = "Ingrese valores válidos y seleccione un estado.";
+                document.getElementById("resultadoDescuento").innerText = "Ingrese valores válidos, seleccione un estado y una categoría.";
             }
         }
 
         window.mostrarCantidad = mostrarCantidad;
         window.mostrarPrecio = mostrarPrecio;
         window.mostrarEstado = mostrarEstado;
+        window.mostrarCategoria = mostrarCategoria;
         window.calcularTotal = calcularTotal;
         window.calcularTotalConImpuesto = calcularTotalConImpuesto;
         window.calcularTotalConDescuento = calcularTotalConDescuento;
