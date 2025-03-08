@@ -7,6 +7,13 @@ function calcularPrecioConCategoria(totalNeto, impuesto, categoria) {
         return parseFloat((totalConImpuesto - descuento).toFixed(2));
     }
 
+    if (categoria === "Bebidas alcohólicas") {
+        const impuestoAdicional = 7;
+        const descuentoAdicional = 0;
+        const totalConImpuesto = totalNeto + impuesto + (totalNeto * impuestoAdicional) / 100;
+        return parseFloat(totalConImpuesto.toFixed(2));
+    }
+
     return totalNeto + impuesto;  
 }
 
