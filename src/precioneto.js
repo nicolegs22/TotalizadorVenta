@@ -1,3 +1,4 @@
+// precioneto.js
 function precioneto(cantidad, precioUnitario) {
   return cantidad * precioUnitario;
 }
@@ -9,47 +10,62 @@ function obtenerCostoEnvio(pesoVolumetrico) {
   if (pesoVolumetrico >= 41 && pesoVolumetrico <= 80) return 6;
   if (pesoVolumetrico >= 81 && pesoVolumetrico <= 100) return 6.5;
   if (pesoVolumetrico >= 101 && pesoVolumetrico <= 200) return 8;
-  return 9; // > 200
+  return 9;
 }
 
-function obtenerDescuentoCliente(tipoCliente) {
-  switch (tipoCliente) {
-    case 'Recurrente':
-      return 0.5;
-    case 'Antiguo Recurrente':
-      return 1;
-    case 'Especial':
-      return 1.5;
-    default:
-      return 0; // Normal o tipo no especificado
-  }
-}
-
-function calcularPrecioTotal(cantidad, precioUnitario, porcentajeCA, pesoVolumetrico, tipoCliente) {
+function calcularPrecioTotal(cantidad, precioUnitario, porcentajeCA, pesoVolumetrico) {
   const precioNeto = precioneto(cantidad, precioUnitario);
   const impuesto = (precioNeto * porcentajeCA) / 100;
   const costoEnvio = obtenerCostoEnvio(pesoVolumetrico);
-  
-  const descuentoEnvio = obtenerDescuentoCliente(tipoCliente);
-  const costoEnvioConDescuento = costoEnvio - (costoEnvio * descuentoEnvio) / 100;
+  const precioTotal = precioNeto + impuesto + costoEnvio;
 
-  const precioTotal = precioNeto + impuesto + costoEnvioConDescuento; // Incluye el costo de envío con descuento
+  
+  console.log(`Detalles del cálculo de precio total:`);
+  console.log(`Precio neto: ${precioNeto}`);
+  console.log(`Impuesto (${porcentajeCA}%): ${impuesto}`);
+  console.log(`Costo de envío (peso volumétrico ${pesoVolumetrico}): ${costoEnvio}`);
+  console.log(`Precio total: ${precioTotal.toFixed(2)}`);
+  
   return parseFloat(precioTotal.toFixed(2));
 }
 
 function calcularPrecioConDescuento(precioNeto, porcentajeDescuento) {
   const descuento = (precioNeto * porcentajeDescuento) / 100;
-  return parseFloat((precioNeto - descuento).toFixed(2));
+  const precioFinal = precioNeto - descuento;
+  
+ 
+  console.log(`Detalles del cálculo con descuento porcentual:`);
+  console.log(`Precio neto: ${precioNeto}`);
+  console.log(`Descuento (${porcentajeDescuento}%): ${descuento}`);
+  console.log(`Precio con descuento: ${precioFinal.toFixed(2)}`);
+  
+  return parseFloat(precioFinal.toFixed(2));
 }
 
 function calcularPrecioConDescuentoFijo(precioNeto, descuentoFijo) {
   const precioFinal = precioNeto - descuentoFijo;
-  return parseFloat(Math.max(precioFinal, 0).toFixed(2)); // Evita valores negativos
+  const precioFinalConDescuento = Math.max(precioFinal, 0);
+  
+ 
+  console.log(`Detalles del cálculo con descuento fijo:`);
+  console.log(`Precio neto: ${precioNeto}`);
+  console.log(`Descuento fijo: ${descuentoFijo}`);
+  console.log(`Precio con descuento: ${precioFinalConDescuento.toFixed(2)}`);
+  
+  return parseFloat(precioFinalConDescuento.toFixed(2));
 }
 
 function calcularPrecioConDescuentoPorcentajeFijo(precioNeto, porcentajeDescuento) {
   const descuento = (precioNeto * porcentajeDescuento) / 100;
-  return parseFloat((precioNeto - descuento).toFixed(2));
+  const precioFinal = precioNeto - descuento;
+  
+  
+  console.log(`Detalles del cálculo con descuento porcentual fijo:`);
+  console.log(`Precio neto: ${precioNeto}`);
+  console.log(`Descuento (${porcentajeDescuento}%): ${descuento}`);
+  console.log(`Precio con descuento: ${precioFinal.toFixed(2)}`);
+  
+  return parseFloat(precioFinal.toFixed(2));
 }
 
 export { precioneto, calcularPrecioTotal, calcularPrecioConDescuento, calcularPrecioConDescuentoFijo, calcularPrecioConDescuentoPorcentajeFijo };
