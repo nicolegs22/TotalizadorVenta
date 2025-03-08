@@ -1,13 +1,25 @@
-function calcularPrecioConDescuento(precioNeto, porcentajeDescuento) {
-    const descuento = (precioNeto * porcentajeDescuento) / 100;
-    return parseFloat((precioNeto - descuento).toFixed(2));
-  }
-  
-  function calcularPrecioTotalConDescuento(precioNeto, impuesto, porcentajeDescuento) {
-    const precioConDescuento = calcularPrecioConDescuento(precioNeto, porcentajeDescuento);
-    const precioFinal = precioConDescuento + impuesto;
-    return parseFloat(precioFinal.toFixed(2));
-  }
-  
-  export { calcularPrecioConDescuento, calcularPrecioTotalConDescuento };
-  
+function obtenerPorcentajeDescuento(totalNeto) {
+    if (totalNeto >= 1000 && totalNeto <= 2999) {
+        return 3;
+    } else if (totalNeto >= 3000 && totalNeto <= 6999) {
+        return 5;
+    } else if (totalNeto >= 7000 && totalNeto <= 9999) {
+        return 7;
+    } else if (totalNeto >= 10000 && totalNeto <= 29999) {
+        return 10;
+    } else if (totalNeto >= 30000) {
+        return 15;
+    }
+    return 0;
+}
+
+function calcularPrecioTotalConDescuento(totalNeto, impuesto) {
+    const porcentajeDescuento = obtenerPorcentajeDescuento(totalNeto);
+    const descuento = (totalNeto * porcentajeDescuento) / 100;
+    const totalConImpuesto = totalNeto + impuesto; 
+    const totalConDescuento = totalConImpuesto - descuento;  
+
+    return parseFloat(totalConDescuento.toFixed(2)); 
+}
+
+export { calcularPrecioTotalConDescuento, obtenerPorcentajeDescuento };

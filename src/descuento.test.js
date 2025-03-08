@@ -1,18 +1,61 @@
-import { calcularPrecioConDescuento, calcularPrecioTotalConDescuento } from "./descuento";
+import { obtenerPorcentajeDescuento, calcularPrecioTotalConDescuento } from "./descuento";
 
-test("Calcula descuento del 10% sobre 100", () => {
-  expect(calcularPrecioConDescuento(100, 10)).toBe(90.00);
+describe("Cálculo del porcentaje de descuento", () => {
+    it("debería aplicar un 3% de descuento para un total de $1000", () => {
+        expect(obtenerPorcentajeDescuento(1000)).toBe(3);
+    });
+
+    it("debería aplicar un 5% de descuento para un total de $3000", () => {
+        expect(obtenerPorcentajeDescuento(3000)).toBe(5);
+    });
+
+    it("debería aplicar un 5% de descuento para un total de $6999", () => {
+        expect(obtenerPorcentajeDescuento(6999)).toBe(5);
+    });
+
+    it("debería aplicar un 7% de descuento para un total de $7000", () => {
+        expect(obtenerPorcentajeDescuento(7000)).toBe(7);
+    });
+
+    it("debería aplicar un 7% de descuento para un total de $9999", () => {
+        expect(obtenerPorcentajeDescuento(9999)).toBe(7);
+    });
+
+    it("debería aplicar un 10% de descuento para un total de $10000", () => {
+        expect(obtenerPorcentajeDescuento(10000)).toBe(10);
+    });
+
+    it("debería aplicar un 10% de descuento para un total de $29999", () => {
+        expect(obtenerPorcentajeDescuento(29999)).toBe(10);
+    });
+
+    it("debería aplicar un 15% de descuento para un total de $30000", () => {
+        expect(obtenerPorcentajeDescuento(30000)).toBe(15);
+    });
+
+    it("debería aplicar un 15% de descuento para un total de $50000", () => {
+        expect(obtenerPorcentajeDescuento(50000)).toBe(15);
+    });
 });
 
-test("Calcula descuento del 25% sobre 200", () => {
-  expect(calcularPrecioConDescuento(200, 25)).toBe(150.00);
-});
+describe("Cálculo del precio total con descuento", () => {
+    it("debería calcular el precio total con descuento del 3% para total de $1000 y $100 de impuesto", () => {
+        expect(calcularPrecioTotalConDescuento(1000, 100)).toBe(1070.00);
+    });
 
-test("Calcula precio total con descuento (100 de neto, 10 de impuesto, 5 de descuento)", () => {
-  expect(calcularPrecioTotalConDescuento(100, 10, 5)).toBe(105.00);
-});
+    it("debería calcular el precio total con descuento del 5% para total de $3000 y $200 de impuesto", () => {
+        expect(calcularPrecioTotalConDescuento(3000, 200)).toBe(3050.00);
+    });
 
-test("Calcula precio total con descuento del 20% sobre 500 con 50 de impuesto", () => {
-    expect(calcularPrecioTotalConDescuento(500, 50, 20)).toBe(450.00);
-  });
-  
+    it("debería calcular el precio total con descuento del 7% para total de $7000 y $500 de impuesto", () => {
+        expect(calcularPrecioTotalConDescuento(7000, 500)).toBe(7010.00);
+    });
+
+    it("debería calcular el precio total con descuento del 10% para total de $10000 y $800 de impuesto", () => {
+        expect(calcularPrecioTotalConDescuento(10000, 800)).toBe(9800.00);
+    });
+
+    it("debería calcular el precio total con descuento del 15% para total de $30000 y $1500 de impuesto", () => {
+        expect(calcularPrecioTotalConDescuento(30000, 1500)).toBe(27000.00);
+    });
+});
