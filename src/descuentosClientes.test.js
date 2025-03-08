@@ -16,4 +16,8 @@ describe("Cálculo de descuento fijo para clientes", () => {
     expect(descuento).toBe(200);
   });
 
+  it("no debería aplicar descuento para cliente especial con precio neto menor a 7000 y categoría Electrónicos", () => {
+    const descuento = calcularDescuentoCliente(6000, "Electrónicos", "Especial");
+    expect(descuento).toBe(0);
+  });
 });
