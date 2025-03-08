@@ -29,6 +29,14 @@ function calcularPrecioConCategoria(totalNeto, impuesto, categoria) {
         return parseFloat(totalConImpuesto.toFixed(2));
     }
 
+    if (categoria === "Electrónicos") {
+        const impuestoAdicional = 4;
+        const descuentoAdicional = 1;
+        const totalConImpuesto = totalNeto + impuesto + (totalNeto * impuestoAdicional) / 100;
+        const descuento = (totalConImpuesto * descuentoAdicional) / 100;
+        return parseFloat((totalConImpuesto - descuento).toFixed(2));
+    }
+
     return totalNeto + impuesto;  
 }
 
