@@ -9,4 +9,9 @@ function calcularPrecioTotal(cantidad, precioUnitario, porcentajeCA) {
   return parseFloat(precioTotal.toFixed(2));
 }
 
-export { precioneto, calcularPrecioTotal };
+function calcularPrecioConDescuento(precioNeto, porcentajeDescuento) {
+  const descuento = (precioNeto * porcentajeDescuento) / 100;
+  return parseFloat((precioNeto - descuento).toFixed(2));
+}
+
+export { precioneto, calcularPrecioTotal, calcularPrecioConDescuento };
